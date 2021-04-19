@@ -24,5 +24,10 @@ def articles():
     #print(articles[0]['title'])
     return render_template("articles.html", articles=articles)
 
+@app.route('/article/<id>') #params
+def article(id):
+    print(id)
+    return "Success"
+
 if __name__ == "__main__": # 처음 서버 띄울때
     app.run() # http://localhost:5000/ default
