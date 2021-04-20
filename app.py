@@ -1,3 +1,4 @@
+import pymysql
 from flask import Flask , render_template
 from data import Articles
 
@@ -5,6 +6,14 @@ from data import Articles
 app = Flask(__name__)
 
 app.debug = True # 내폴더구조가 모두보임 기본값은 false false로 해놓으면 안보임
+
+db = pymysql.connect(
+    host = 'localhost'
+    post = 3306
+    user = 'root'
+    passwd = '1234'
+    db = 'busan'
+)
 
 @app.route('/', methods=['GET']) 
 # http://localhost:5000/data
