@@ -1,10 +1,19 @@
-from flask import Flask , render_template
-from data import Articles
-
+import pymysql
+from flask import Flask , render_template, request, redirect
+from data import Articles 
 
 app = Flask(__name__)
 
 app.debug = True # 내폴더구조가 모두보임 기본값은 false false로 해놓으면 안보임
+
+db = pymysql.connect(
+    host = 'localhost',
+    port = 3306,
+    user = 'root',
+    passwd = '1234',
+    db = 'busan'
+)
+
 
 @app.route('/', methods=['GET']) 
 # http://localhost:5000/data
@@ -20,16 +29,60 @@ def about():
 
 @app.route('/articles')
 def articles():
-    articles = Articles()
-    #print(articles[0]['title'])
-    return render_template("articles.html", articles=articles)
+    cursor = db.cursor()
+    sql = 'SELECT * FROM topic;'
+    cursor.execute(sql)
+    topics = cursor.fetchall() # 튜플 가로 두개라 for문 필수
+    print(topics)
+    # articles = Articles()
+    # print(articles[0]['title'])
+    return render_template("articles.html", articles=topics)
 
 @app.route('/article/<int:id>') #params
 def article(id):
-    articles = Articles()
-    article = articles[id - 1]
-    print(articles[id - 1])
-    return render_template("article.html", article = article)
+    cursor = db.cursor()
+    sql = 'SELECT * FROM topic where id={}'.format(id)
+    cursor.execute(sql)
+    topic = cursor.fetchone() # 튜플 가로 하나 for문 안써줘도 됨
+    print(topic)
+    # articles = Articles()
+    # article = articles[id - 1]
+    # print(articles[id - 1])
+    return render_template("article.html", article = topic)
+
+@app.route('/add_articles', methods=["GET","POST"])
+def add_articles():
+    cursor = db.cursor()
+    if request.method == "POST":
+        author = request.form['author']
+        title = request.form['title']
+        desc = request.form['desc']
+
+        sql = "INSERT INTO `topic` (`title`, `body`, `author`) VALUES (%s, %s, %s);"
+        input_data = [title, desc, author ]
+        # print(author, title, desc)
+
+        cursor.execute(sql, input_data)
+        db.commit()
+        print(cursor.rowcount)
+        # db.close()
+        return redirect('/articles')
+    
+    else:
+        # return "<h1>글쓰기 페이지</h1>"
+        return render_template('add_articles.html')
+    
+@app.route('/delete/<int:id>', methods=["POST"])
+def delete(id):
+    cursor = db.cursor()
+    # sql = "DELETE FROM topic WHERE id = %s;" #format쓰면 밑에 2줄 id 필요없음
+    # id = [id]
+    # cursor.execute(sql , id)
+    sql = "DELETE FROM topic WHERE id = {};".format(id)
+    cursor.execute(sql)
+    db.commit()
+
+    return redirect('/articles')
 
 if __name__ == "__main__": # 처음 서버 띄울때
     app.run() # http://localhost:5000/ default
