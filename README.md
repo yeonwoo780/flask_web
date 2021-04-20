@@ -661,7 +661,7 @@ def article(id):
 
 - result!
 
-![image-20210420225923324](C:\Python_Test\flask_web\mark_image\image-20210420225923324.png)
+![image-20210420225923324](./mark_image/image-20210420225923324.png)
 
 
 
