@@ -523,3 +523,202 @@ users = cursor.fetchall()
 print(cursor.rowcount, users)
 ```
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+- app.py
+
+```python
+import pymysql
+from flask import Flask , render_template, request, redirect
+from data import Articles
+
+app = Flask(__name__)
+
+app.debug = True # 내폴더구조가 모두보임 기본값은 false false로 해놓으면 안보임
+
+db = pymysql.connect(
+    host = 'localhost'
+    post = 3306
+    user = 'root'
+    passwd = '1234'
+    db = 'busan'
+)
+'''
+.
+.
+.
+'''
+# 변경
+@app.route('/articles')
+def articles():
+    # articles = Articles()
+    # print(articles[0]['title'])
+    cursor = db.cursor()
+    sql = 'SELECT * FROM topic;'
+    cursor.execute(sql)
+    topics = cursor.fetchall() # 튜플 가로 두개라 for문 필수
+    print(topics)
+    return render_template("articles.html", articles=topics)
+```
+
+
+
+- articles.html
+
+```html
+                    <tbody>
+                      {% for article in articles %}
+                        <tr>
+                          <th scope="row">{{ article[0] }}</th>
+                          <td><a href="/article/{{article[0]}}">{{ article[1] }}</a></td>
+                          <td>{{ article[2] }}</td>
+                          <td>{{ article[3] }}</td>
+                          <td>{{ article[4] }}</td>
+                          <td><button type="button" class="btn btn-danger">Edit</button></td>
+                        </tr>
+                    {% endfor %}
+                      </tbody>
+```
+
+
+
+- result !
+
+![image-20210420223256442](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420223256442.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- app.py
+
+```python
+@app.route('/article/<int:id>') #params
+def article(id):
+    # articles = Articles()
+    # article = articles[id - 1]
+    # print(articles[id - 1])
+    cursor = db.cursor()
+    sql = 'SELECT * FROM topic where id = {};'.format(id)
+    cursor.execute(sql)
+    topic = cursor.fetchone()
+    print(topic)
+    return render_template("article.html", article = topic)
+```
+
+
+
+※  fetchone()은 튜플 한개 형태 	ex)	:	( )
+
+![image-20210420225156948](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420225156948.png)
+
+
+
+- article.html
+
+```html
+  
+{% extends "layouts.html" %}
+{% block body %}
+
+<div class="card">
+    <div class="card-header">
+        {{ article[3] }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ article[1] }}</h5>
+      <p class="card-text">{{ article[2] }}</p>
+      <a href="/articles" class="btn btn-primary">돌아가기</a>
+    </div>
+  </div>
+<a class="btn btn-warning btn-lg" href="/" role="button">Home</a>
+{% endblock %}
+```
+
+
+
+- result!
+
+![image-20210420225923324](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420225923324.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+app.py
+
+```python
+@app.route('/add_articles', methods=['GET', 'POST'])
+def add_articles():
+    cursor = db.cursor()
+    if request.method == "POST":
+        author = request.form['author']
+        title = request.form['title']
+        desc = request.form['desc']
+
+        sql = "INSERT INTO `topic` (`title`, `body`, `author`) VALUES (%s, %s, %s);"
+        input_data = [title, desc, author]
+
+        cursor.execute(sql, input_data)
+        db.commit()
+        print(cursor.rowcount)
+        return redirect('/articles')
+    
+    else:
+        return render_template('add_articles.html')
+```
+
+
+
+- add_articles.html
+
+```html
+{% extends "layouts.html" %}
+{% block body %}
+    
+    <form action="/add_articles" method="post">
+        <input type="text" name="author" placeholder="작성자" required>
+        <input type="text" name="title" placeholder="제목" required>
+        <input type="text" name="desc" placeholder="내용" required>
+        <input type="submit" value="작성">
+    </form>
+
+{% endblock %} 
+```
+
+
+
+- result!
+
+![image-20210420230706854](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420230706854.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- articles.html
+
+  맨 마지막 코드 변경 필요 주소를 add_articles로 바꿔줌으로써 글쓰기 누르면
+
+  add_articles로 가짐
+
+```html
+btn-warning btn-lg" href="/add_articles" role="button">글쓰기</a>
+```
+
+
+
+![image-20210420231605695](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420231605695.png)
+
+
+
+![image-20210420231528437](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420231528437.png)
+
+
+
+- result!
+
+![image-20210420231640554](C:\Users\jung\AppData\Roaming\Typora\typora-user-images\image-20210420231640554.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
