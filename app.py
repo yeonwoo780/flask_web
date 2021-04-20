@@ -69,5 +69,17 @@ def add_articles():
     else:
         return render_template('add_articles.html')
 
+@app.route('/delete/<int:id>', methods=["POST"])
+def delete(id):
+    cursor = db.cursor()
+    # sql = "DELETE FROM topic WHERE id = %s;" #format쓰면 밑에 2줄 id 필요없음
+    # id = [id]
+    # cursor.execute(sql , id)
+    sql = 'DELETE FROM topic WHERE id = {};'.format(id)
+    cursor.execute(sql)
+    db.commit()
+
+    return redirect('/articles')
+
 if __name__ == "__main__": # 처음 서버 띄울때
     app.run() # http://localhost:5000/ default
