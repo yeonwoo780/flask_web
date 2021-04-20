@@ -516,7 +516,7 @@ print(users)
 
   ※ fetchall()은 튜플안에 튜플형태 	ex)	:	( () , () , ... )
 
-![image-20210420221114431](C:\Python_Test\flask_web\mark_image\image-20210420221114431.png)
+![image-20210420221114431](./mark_image/image-20210420221114431.png)
 
 
 
@@ -602,7 +602,7 @@ def articles():
 
 - result !
 
-![image-20210420223256442](C:\Python_Test\flask_web\mark_image\image-20210420223256442.png)
+![image-20210420223256442](./mark_image/image-20210420223256442.png)
 
 
 
@@ -632,7 +632,7 @@ def article(id):
 
 ※  fetchone()은 튜플 한개 형태 	ex)	:	( )
 
-![image-20210420225156948](C:\Python_Test\flask_web\mark_image\image-20210420225156948.png)
+![image-20210420225156948](./mark_image/image-20210420225156948.png)
 
 
 
@@ -716,7 +716,7 @@ def add_articles():
 
 - result!
 
-![image-20210420230706854](C:\Python_Test\flask_web\mark_image\image-20210420230706854.png)
+![image-20210420230706854](./mark_image/image-20210420230706854.png)
 
 
 
@@ -736,17 +736,17 @@ def add_articles():
 btn-warning btn-lg" href="/add_articles" role="button">글쓰기</a>
 ```
 
-![image-20210420231605695](C:\Python_Test\flask_web\mark_image\image-20210420231605695.png)
+![image-20210420231605695](./mark_image/image-20210420231605695.png)
 
 
 
-![image-20210420231528437](C:\Python_Test\flask_web\mark_image\image-20210420231528437.png)
+![image-20210420231528437](./mark_image/image-20210420231528437.png)
 
 
 
 - result!
 
-![image-20210420231640554](C:\Python_Test\flask_web\mark_image\image-20210420231640554.png)
+![image-20210420231640554](./mark_image/image-20210420231640554.png)
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -785,17 +785,17 @@ def delete(id):
 
 
 
-![image-20210420232923377](C:\Python_Test\flask_web\mark_image\image-20210420232923377.png)
+![image-20210420232923377](./mark_image/image-20210420232923377.png)
 
 
 
-![image-20210420232938560](C:\Python_Test\flask_web\mark_image\image-20210420232938560.png)
+![image-20210420232938560](./mark_image/image-20210420232938560.png)
 
 - result!
 
   삭제된거 확인가능
 
-  ![image-20210420233159978](C:\Python_Test\flask_web\mark_image\image-20210420233159978.png)
+  ![image-20210420233159978](./mark_image/image-20210420233159978.png)
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -858,7 +858,7 @@ def delete(id):
 
   이런식으로 변경됨
 
-![image-20210420234030893](C:\Python_Test\flask_web\mark_image\image-20210420234030893.png)
+![image-20210420234030893](./mark_image/image-20210420234030893.png)
 
 
 
