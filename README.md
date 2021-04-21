@@ -1143,3 +1143,90 @@ def login():
 <input class="form-control" type="password" name='userpw' required>
 ```
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- app.py
+
+```python
+@app.route('/register', methods=["POST","GET"])
+def register():
+    cursor = db.cursor()
+    if request.method == "POST":
+        
+        name = request.form['name']
+        email = request.form['email']
+        username = request.form['username']
+        # userpw = (request.form['userpw'])
+        userpw = sha256_crypt.encrypt(request.form['userpw'])
+        sql = "INSERT INTO users (name, email, username, password) VALUES (%s, %s, %s, %s);"
+        input_data = [name, email, username, userpw]
+        cursor.execute(sql, input_data)
+        db.commit()
+        return redirect('/')
+
+    else:
+        return render_template("register.html")
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    cursor = db.cursor()
+    if request.method == "POST":
+        email = request.form['email']
+        userpw_1 = request.form['userpw']
+        # print(request.form['username'])
+        # print(userpw_1)
+        
+        sql = 'SELECT * FROM users WHERE email = %s;'
+        input_data = [email]
+        cursor.execute(sql, input_data)
+        user = cursor.fetchone()
+        # print(userpw[0])#cursor.fetchone()[0]
+        if user == None:
+            print(user)
+            return redirect('/register')
+            
+        else:
+            if sha256_crypt.verify(userpw_1, user[4]):
+                # 앞뒤 맞는지 안 맞는지 검증
+                return redirect('/articles')
+            else:
+                return user[4]
+    
+    else:
+        return render_template('login.html')
+```
+
+
+
+- login.html
+
+```html
+{% extends "layouts.html"%}
+<!-- 진자 엔진의 import방법 = extends -->
+{% block body %}
+<form action="/login" method="POST">
+    ​<div class="form-group">
+        <label>ID</label>
+        <input type="email" name="email" class="form-control" placeholder="ID">
+    </div>
+    <div class="form-group">
+        <label>PW</label>
+        <input type="password" name="userpw" class="form-control" placeholder="Password">
+    </div>
+    <input class="btn btn-dark btn-dark" type="submit" value="Login">
+
+</form>
+<h1 class="display-4">MAIN HOME PAGE</h1>
+<p class="lead">This Application is build using by python and Flask Framework</p>
+<!-- <a class="btn btn-dark btn-dark" href="/assignment" role="button">Assignment</a> -->
+<hr class="my-4">
+<a class="btn btn-warning btn-dark" href="/register" role="button">회원가입</a>
+{% endblock %} 
+```
+

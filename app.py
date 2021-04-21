@@ -111,11 +111,11 @@ def edit(id):
 def register():
     cursor = db.cursor()
     if request.method == "POST":
-
+        
         name = request.form['name']
         email = request.form['email']
         username = request.form['username']
-        # userpw = request.form['userpw']
+        # userpw = (request.form['userpw'])
         userpw = sha256_crypt.encrypt(request.form['userpw'])
         sql = "INSERT INTO users (name, email, username, password) VALUES (%s, %s, %s, %s);"
         input_data = [name, email, username, userpw]
@@ -130,20 +130,29 @@ def register():
 def login():
     cursor = db.cursor()
     if request.method == "POST":
-        usersname = request.form['username']
+        email = request.form['email']
         userpw_1 = request.form['userpw']
-
-        sql = 'SELECT password FROM users WHERE email = %s;'
-        input_data = [usersname]
-        cursor.execute(sql, input_data)
-        userpw = cursor.fetchone()
-        # print(userpw[0])#cursor.fetchone()[0]
-        print(userpw[0])
-        if sha256_crypt.verify(userpw_1, userpw[0]):
-            return "Success"
+        # print(request.form['username'])
+        # print(userpw_1)
         
+        sql = 'SELECT * FROM users WHERE email = %s;'
+        input_data = [email]
+        cursor.execute(sql, input_data)
+        user = cursor.fetchone()
+        # print(userpw[0])#cursor.fetchone()[0]
+        if user == None:
+            print(user)
+            return redirect('/register')
+            
         else:
-            return userpw[0]
+            if sha256_crypt.verify(userpw_1, user[4]):
+                # 앞뒤 맞는지 안 맞는지 검증
+                return redirect('/articles')
+            else:
+                return user[4]
+    
+    else:
+        return render_template('login.html')
 
 
 if __name__ == "__main__": # 처음 서버 띄울때
