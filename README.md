@@ -929,5 +929,28 @@ edit_article.html
 
 ![image-20210421211929972](./mark_image/image-20210421211929972.png)
 
+-------------------------------------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- app.py
+
+```
+@app.route('/<int:id>/edit', methods=["GET", "POST"])
+def edit(id):
+    cursor = db.cursor()
+    if request.method == "POST":
+        return "Success"
+    
+    else:
+        sql = 'SELECT * FROM topic WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        topic = cursor.fetchone()
+        print(topic, '\n')
+
+        print(topic[1])
+        return render_template('edit_article.html', article = topic)
+```
 
