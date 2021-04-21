@@ -979,3 +979,47 @@ def edit(id):
 
 
 
+- app.py
+
+```python
+@app.route('/<int:id>/edit', methods=["GET", "POST"])
+def edit(id):
+    cursor = db.cursor()
+    if request.method == "POST":
+        title = request.form['title']
+        desc = request.form['desc']
+
+        sql = "UPDATE topic SET title = %s, body = %s WHERE id = {};".format(id)
+        input_data = [title, desc]
+        cursor.execute(sql, input_data)
+        db.commit()
+        print(request.form['title'])
+
+        return redirect('/articles')
+    
+    else:
+        sql = 'SELECT * FROM topic WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        topic = cursor.fetchone()
+        # print(topic, '\n')
+
+        # print(topic[1])
+        return render_template('edit_article.html', article = topic)
+```
+
+
+
+- edit_article.html
+
+```html
+action="/{{article[0]}}/edit"
+```
+
+
+
+- result!
+
+![image-20210421223126333](./mark_image/image-20210421223126333.png)
+
+
+
