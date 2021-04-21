@@ -91,9 +91,10 @@ def edit(id):
     if request.method == "POST":
         title = request.form['title']
         desc = request.form['desc']
+        author = request.form['author']
         
-        sql = "UPDATE topic SET title = %s, body = %s WHERE id = {};".format(id)
-        input_data = [title, desc]
+        sql = "UPDATE topic SET title = %s, body = %s, author = %s WHERE id = {};".format(id)
+        input_data = [title, desc, author]
         cursor.execute(sql, input_data)
         db.commit()
         print(request.form['title'])
@@ -108,6 +109,25 @@ def edit(id):
 
         # print(topic[1])
         return render_template("edit_article.html", article = topic)
+
+
+@app.route('/register', methods=["POST","GET"])
+def register():
+    cursor = db.cursor()
+    if request.method == "POST":
+        
+        name = request.form['name']
+        email = request.form['email']
+        username = request.form['username']
+        userpw = request.form['userpw']
+        sql = "INSERT INTO users (name, email, username, password) VALUES (%s, %s, %s, %s);"
+        input_data = [name, email, username, userpw]
+        cursor.execute(sql, input_data)
+        db.commit()
+        return redirect('/')
+
+    else:
+        return render_template("register.html")
 
 
 if __name__ == "__main__": # 처음 서버 띄울때
