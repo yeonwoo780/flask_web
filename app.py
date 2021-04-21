@@ -1,6 +1,7 @@
 import pymysql
 from flask import Flask , render_template, request, redirect
 from data import Articles 
+from passlib.hash import sha256_crypt
 
 app = Flask(__name__)
 
@@ -119,7 +120,8 @@ def register():
         name = request.form['name']
         email = request.form['email']
         username = request.form['username']
-        userpw = request.form['userpw']
+        # userpw = (request.form['userpw'])
+        userpw = sha256_crypt.encrypt(request.form['userpw'])
         sql = "INSERT INTO users (name, email, username, password) VALUES (%s, %s, %s, %s);"
         input_data = [name, email, username, userpw]
         cursor.execute(sql, input_data)
@@ -128,6 +130,28 @@ def register():
 
     else:
         return render_template("register.html")
+
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    cursor = db.cursor()
+    if request.method == "POST":
+        usersname = request.form['username']
+        userpw_1 = request.form['userpw']
+        # print(request.form['username'])
+        # print(userpw_1)
+        
+        sql = 'SELECT password FROM users WHERE email = %s;'
+        input_data = [usersname]
+        cursor.execute(sql, input_data)
+        userpw = cursor.fetchone()
+        # print(userpw[0])#cursor.fetchone()[0]
+        print(userpw[0])
+        if sha256_crypt.verify(userpw_1, userpw[0]):
+            return "Success"
+        else:
+            return userpw[0]
+           
 
 
 if __name__ == "__main__": # 처음 서버 띄울때
