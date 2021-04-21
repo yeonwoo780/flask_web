@@ -1023,3 +1023,66 @@ action="/{{article[0]}}/edit"
 
 
 
+![image-20210421223351420](./mark_image/image-20210421223351420.png)
+
+![image-20210421223451681](./mark_image/image-20210421223451681.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+edit_article.html
+
+```html
+    <div class="jumbotron text-left">
+        <div class="main-container">
+            <!-- horizontal Basic Forms Start -->
+            <div class="pd-20 card-box mb-30">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <h4 class="text-blue h4">Edit Your List</h4>
+                    </div>
+                </div>
+                <form action="/{{article[0]}}/edit" method="POST" onsubmit="return confirm('이제로 편집하시겠습니까?')">
+                    <div class="form-group">
+                        <label>TITLE</label>
+                        <input class="form-control" type="text" name='title' value="{{article[1]}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIPTON</label>
+                        <textarea class="form-control" name="desc" rows="10" required>{{ article[2]}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>AUHOR</label>
+                        <input type="text" name='author' class="form-control" value="{{article[3]}}" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-warning btn-lg btn-block" type="submit" value="편집완료" >
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-primary btn-lg btn-block" href="/articles"> 돌아가기</a>
+                    </div>
+                </form>
+            </div>
+            <!-- horizontal Basic Forms End -->
+            </div>
+    <hr class="my-4">
+  </div>
+```
+
+
+
+![image-20210421224840756](./mark_image/image-20210421224840756.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
