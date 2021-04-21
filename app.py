@@ -35,7 +35,7 @@ def articles():
     sql = 'SELECT * FROM topic;'
     cursor.execute(sql)
     topics = cursor.fetchall() # 튜플 가로 두개라 for문 필수
-    print(topics)
+    # print(topics)
     return render_template("articles.html", articles=topics)
 
 @app.route('/article/<int:id>') #params
@@ -47,7 +47,7 @@ def article(id):
     sql = 'SELECT * FROM topic where id = {};'.format(id)
     cursor.execute(sql)
     topic = cursor.fetchone()
-    print(topic)
+    # print(topic)
     return render_template("article.html", article = topic)
 
 @app.route('/add_articles', methods=['GET', 'POST'])
@@ -63,7 +63,7 @@ def add_articles():
 
         cursor.execute(sql, input_data)
         db.commit()
-        print(cursor.rowcount)
+        # print(cursor.rowcount)
         return redirect('/articles')
     
     else:
@@ -85,15 +85,24 @@ def delete(id):
 def edit(id):
     cursor = db.cursor()
     if request.method == "POST":
-        return "Success"
+        title = request.form['title']
+        desc = request.form['desc']
+
+        sql = "UPDATE topic SET title = %s, body = %s WHERE id = {};".format(id)
+        input_data = [title, desc]
+        cursor.execute(sql, input_data)
+        db.commit()
+        print(request.form['title'])
+
+        return redirect('/articles')
     
     else:
         sql = 'SELECT * FROM topic WHERE id = {}'.format(id)
         cursor.execute(sql)
         topic = cursor.fetchone()
-        print(topic, '\n')
+        # print(topic, '\n')
 
-        print(topic[1])
+        # print(topic[1])
         return render_template('edit_article.html', article = topic)
     
 

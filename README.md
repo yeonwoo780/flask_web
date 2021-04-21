@@ -937,7 +937,7 @@ edit_article.html
 
 - app.py
 
-```
+```python
 @app.route('/<int:id>/edit', methods=["GET", "POST"])
 def edit(id):
     cursor = db.cursor()
@@ -953,4 +953,29 @@ def edit(id):
         print(topic[1])
         return render_template('edit_article.html', article = topic)
 ```
+
+
+
+- edit_article.html
+
+```html
+<input type="text" name = "title" value="{{article[1]}}" required>
+    <input type="text" name = "desc" value="{{article[2]}}" required>
+    <input type="text" name = "author" value="{{article[3]}}" disabled>
+    <input type="submit" value="수정하기">
+```
+
+
+
+- result!
+
+![image-20210421213354538](./mark_image/image-20210421213354538.png)
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
