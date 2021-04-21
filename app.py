@@ -81,5 +81,13 @@ def delete(id):
 
     return redirect('/articles')
 
+@app.route('/<int:id>/edit', methods=["GET", "POST"])
+def edit(id):
+    if request.method == "POST":
+        return "Success"
+    
+    else:
+        return render_template('edit_article.html')
+
 if __name__ == "__main__": # 처음 서버 띄울때
     app.run() # http://localhost:5000/ default

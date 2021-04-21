@@ -860,9 +860,74 @@ def delete(id):
 
 ![image-20210420234030893](./mark_image/image-20210420234030893.png)
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
+<h3>html edit and login</h3>
+
+
+
+- app.py
+
+```python
+@app.route('/<int:id>/edit', methods=["GET", "POST"])
+def edit(id):
+    if request.method == "POST":
+        return "Success"
+    
+    else:
+        return render_template('edit_article.html')
+```
+
+
+
+- articles.html
+
+```html
+<a href="/{{article[0]}}/edit">
+                              <button type="button" class="btn btn-danger">Edit</button>
+                            </a>
+```
+
+
+
+edit_article.html
+
+```html
+{% extends "layouts.html" %}
+{% block body %}
+<h1 class="display-4">ABOUT PAGE</h1>
+<p class="lead">This Application is build using by python and Flask Framework</p>
+<hr class="my-4">
+<form
+    action="/edit"
+    method="post"
+    onsubmit="return confirm('정말 수정하시겠습니까?')"
+
+    <input type="text" name = "title" required>
+    <input type="text" name = "desc" required>
+    <input type="text" name = "author" disabled>
+    <input type="submit" value="수정하기">
+>
+</form>
+<a class="btn btn-warning btn-lg" href="/articles" role="button">돌아가기</a>
+{% endblock %}
+```
+
+
+
+- result!
+
+![image-20210421211929972](./mark_image/image-20210421211929972.png)
 
 
 

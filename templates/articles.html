@@ -41,7 +41,9 @@
                           <td>{{ article[3] }}</td>
                           <td>{{ article[4] }}</td>
                           <td>
-                            <button type="button" class="btn btn-danger">Edit</button>
+                            <a href="/{{article[0]}}/edit">
+                              <button type="button" class="btn btn-danger">Edit</button>
+                            </a>
                             <form action="/delete/{{article[0]}}" style="margin-top: 10px;" method="POST" onsubmit="return confirm('정말 삭제 하시겠습니까?')">
                               <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
