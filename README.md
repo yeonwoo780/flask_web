@@ -1086,3 +1086,60 @@ edit_article.html
 
 
 
+![image-20210421235622072](./mark_image/image-20210421235622072.png)
+
+
+
+- result
+
+  hash코드  뜨는거 확인 가능
+
+![image-20210421235655400](./mark_image/image-20210421235655400.png)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- app.py
+
+userpw = request.form['userpw']
+
+-> userpw = sha256_crypt.encrypt(request.form['userpw'])
+
+
+
+- app.py
+
+```python
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    cursor = db.cursor()
+    if request.method == "POST":
+        usersname = request.form['username']
+        userpw_1 = request.form['userpw']
+
+        sql = 'SELECT password FROM users WHERE email = %s;'
+        input_data = [usersname]
+        cursor.execute(sql, input_data)
+        userpw = cursor.fetchone()
+        # print(userpw[0])#cursor.fetchone()[0]
+        print(userpw[0])
+        if sha256_crypt.verify(userpw_1, userpw[0]):
+            return "Success"
+        
+        else:
+            return userpw[0]
+```
+
+
+
+- register.html
+
+```html
+<input class="form-control" type="password" name='userpw' required>
+```
+
